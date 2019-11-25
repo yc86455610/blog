@@ -2,7 +2,7 @@
 
 记一次迟来的猫眼电影电面，面的是Java开发，还是问了一些Java基础、线程池、简单算法，总体来说比较简单。在此记录一下问题。
 
-- 讲一下Java的多态，如何理解多态(我发现很多厂最喜欢问的Java基础就是多态的理解)
+- 讲一下Java[多态](https://github.com/yc86455610/blog/blob/master/JavaReview/polymorphism.md)，如何理解多态(我发现很多厂最喜欢问的Java基础就是多态的理解)
 
   继承+重写+父类引用指向子类对象
 
