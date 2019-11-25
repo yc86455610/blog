@@ -6,6 +6,8 @@
 
   继承+重写+父类引用指向子类对象
 
+- 讲一下static变量、成员变量和局部变量的理解
+
 - equals方法和hashCode方法，什么时候重写equals方法，为什么重写equals要重写hashCode
 
 - hashMap底层(问的比较基础)
