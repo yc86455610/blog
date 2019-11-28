@@ -1,10 +1,8 @@
-[toc]
-
 最近在看Java编程思想中发现自己对Java多态的理解并不到位，总结一下对Java多态的理解
 
 首先看以下代码：
 
-**父类Animal**
+### **父类Animal**
 
 ```java
 class Animal {
@@ -25,7 +23,7 @@ class Animal {
 }
 ```
 
-**子类Cat**
+### **子类Cat**
 
 ```java
 class Cat extends Animal {
@@ -47,7 +45,7 @@ class Cat extends Animal {
 }
 ```
 
-**测试类Polymorphism**
+### **测试类Polymorphism**
 
 ```java
 public class Polymorphism {
