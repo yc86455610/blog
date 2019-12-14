@@ -6,10 +6,21 @@
       * [默认约束](#默认约束)
       * [外键约束](#外键约束)
    * [数据库三大设计范式](#数据库三大设计范式)
-      * [第一范式 1NF](#第一范式-1nf)
+      * [第一范式](#第一范式)
       * [第二范式](#第二范式)
       * [第三范式](#第三范式)
    * [MySql查询练习](#mysql查询练习)
+      * [1、查询student表的所有记录](#1查询student表的所有记录)
+      * [2、查询student表中的所有记录的sname，ssex和class列](#2查询student表中的所有记录的snamessex和class列)
+      * [3、查询教师所有单位即不重复的department列](#3查询教师所有单位即不重复的department列)
+      * [4、查询score表中成绩在60到80之间的所有记录](#4查询score表中成绩在60到80之间的所有记录)
+      * [5、查询score表中成绩为85，86或88的记录](#5查询score表中成绩为8586或88的记录)
+      * [6、查询student表中“95031”班或性别为“女”的同学记录](#6查询student表中95031班或性别为女的同学记录)
+      * [7、以class降序查询student表中的所有记录](#7以class降序查询student表中的所有记录)
+      * [8、以cno升序、degree降序查询score表中的所有记录](#8以cno升序degree降序查询score表中的所有记录)
+      * [9、查询“95031”班的学生人数](#9查询95031班的学生人数)
+      * [10、查询score表中的最高分的学生学号和课程号（子查询或者排序）](#10查询score表中的最高分的学生学号和课程号子查询或者排序)
+      * [11、查询每门课的平均成绩](#11查询每门课的平均成绩)
 
 # MySQL约束
 
@@ -438,7 +449,7 @@ ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constrai
 
 # 数据库三大设计范式
 
-## 第一范式 1NF
+## 第一范式 
 
 ```
 数据表中的所有字段都是不可分割的原子值
@@ -636,6 +647,7 @@ create table score(
 );
 
 
+
 往数据表中添加数据
 
 添加学生信息
@@ -672,10 +684,13 @@ insert into score values('109','3-105','76');
 insert into score values('109','3-245','68');
 insert into score values('109','6-166','81');
 
+```
+
 查询练习
 
-1、查询student表的所有记录
+## 1、查询student表的所有记录
 
+```
 mysql> select * from student;
 +-----+-----------+------+---------------------+-------+
 | sno | sname     | ssex | sbirthday           | class |
@@ -692,7 +707,11 @@ mysql> select * from student;
 +-----+-----------+------+---------------------+-------+
 9 rows in set (0.00 sec)
 
-2、查询student表中的所有记录的sname，ssex和class列
+```
+
+## 2、查询student表中的所有记录的sname，ssex和class列
+
+```
 
 select sname, ssex, class from student;
 
@@ -712,29 +731,211 @@ mysql> select sname, ssex, class from student;
 +-----------+------+-------+
 9 rows in set (0.00 sec)
 
-3、查询教师所有单位即不重复的department列
+```
 
-
-4、查询score表中成绩在60到80之间的所有记录
-
-
-5、查询score表中成绩为85，86或88的记录
-
-
-6、查询student表中“95031”班或性别为“女”的同学记录
-
-
-7、以class降序查询student表中的所有记录
-
-
-8、以cno升序、degree降序查询score表中的所有记录
-
-
-9、查询“95031”班的学生人数
-
-
-10、查询score表中的最高分的学生学号和课程号（子查询或者排序）
-
-
+## 3、查询教师所有单位即不重复的department列
 
 ```
+
+select distinct department from teacher;
+
+mysql> select distinct department from teacher;
++-----------------+
+| department      |
++-----------------+
+| 计算机系        |
+| 电子工程系      |
++-----------------+
+2 rows in set (0.00 sec)
+
+```
+
+## 4、查询score表中成绩在60到80之间的所有记录
+
+```
+查询区间  between 。。。 and 。。。
+
+select * from score where degree between 60 and 80;
+
+mysql> select * from score where degree between 60 and 80;
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 105 | 3-245 |     75 |
+| 105 | 6-166 |     79 |
+| 109 | 3-105 |     76 |
+| 109 | 3-245 |     68 |
++-----+-------+--------+
+4 rows in set (0.01 sec)
+
+select * from score where degree > 60 and degree < 80;
+
+```
+## 5、查询score表中成绩为85，86或88的记录
+
+```
+表示或者关系的查询  in
+
+select * from score where degree in (85, 86, 88);
+
+mysql> select * from score where degree in (85, 86, 88);
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 103 | 3-245 |     86 |
+| 103 | 6-166 |     85 |
+| 105 | 3-105 |     88 |
++-----+-------+--------+
+3 rows in set (0.00 sec)
+```
+## 6、查询student表中“95031”班或性别为“女”的同学记录
+```
+select * from student where class='95031' or ssex='女';
+
+mysql> select * from student where class='95031' or ssex='女';
++-----+-----------+------+---------------------+-------+
+| sno | sname     | ssex | sbirthday           | class |
++-----+-----------+------+---------------------+-------+
+| 102 | 匡明      | 男   | 1975-10-02 00:00:00 | 95031 |
+| 103 | 王丽      | 女   | 1976-01-23 00:00:00 | 95033 |
+| 105 | 王芳      | 女   | 1975-02-10 00:00:00 | 95031 |
+| 106 | 陆君      | 男   | 1974-06-03 00:00:00 | 95031 |
+| 108 | 张全蛋    | 男   | 1975-10-02 00:00:00 | 95031 |
+| 109 | 赵铁柱    | 女   | 1976-01-23 00:00:00 | 95033 |
++-----+-----------+------+---------------------+-------+
+6 rows in set (0.00 sec)
+```
+## 7、以class降序查询student表中的所有记录
+
+升序降序 asc desc
+
+select * from student order by class desc;
+
+mysql> select * from student order by class desc;
++-----+-----------+------+---------------------+-------+
+| sno | sname     | ssex | sbirthday           | class |
++-----+-----------+------+---------------------+-------+
+| 101 | 曾华      | 男   | 1977-09-01 00:00:00 | 95033 |
+| 103 | 王丽      | 女   | 1976-01-23 00:00:00 | 95033 |
+| 104 | 李军      | 男   | 1976-02-20 00:00:00 | 95033 |
+| 107 | 王尼玛    | 男   | 1977-09-01 00:00:00 | 95033 |
+| 109 | 赵铁柱    | 女   | 1976-01-23 00:00:00 | 95033 |
+| 102 | 匡明      | 男   | 1975-10-02 00:00:00 | 95031 |
+| 105 | 王芳      | 女   | 1975-02-10 00:00:00 | 95031 |
+| 106 | 陆君      | 男   | 1974-06-03 00:00:00 | 95031 |
+| 108 | 张全蛋    | 男   | 1975-10-02 00:00:00 | 95031 |
++-----+-----------+------+---------------------+-------+
+9 rows in set (0.00 sec)
+
+select * from student order by class asc;
+
+
+## 8、以cno升序、degree降序查询score表中的所有记录
+```
+select * from score order by cno asc, degree desc;
+
+mysql> select * from score order by cno asc, degree desc;
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 103 | 3-105 |     92 |
+| 105 | 3-105 |     88 |
+| 109 | 3-105 |     76 |
+| 103 | 3-245 |     86 |
+| 105 | 3-245 |     75 |
+| 109 | 3-245 |     68 |
+| 103 | 6-166 |     85 |
+| 109 | 6-166 |     81 |
+| 105 | 6-166 |     79 |
++-----+-------+--------+
+9 rows in set (0.00 sec)
+```
+## 9、查询“95031”班的学生人数
+```
+统计 count
+
+select count(*) from student where class='95031';
+
+mysql> select count(*) from student where class='95031';
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+1 row in set (0.01 sec)
+
+```
+## 10、查询score表中的最高分的学生学号和课程号（子查询或者排序）
+```
+select sno, cno from score where degree=(select max(degree) from score);
+
+mysql> select sno, cno from score where degree=(select max(degree) from score);
++-----+-------+
+| sno | cno   |
++-----+-------+
+| 103 | 3-105 |
++-----+-------+
+1 row in set (0.00 sec)
+
+
+1、找到最高分
+select max(degree) from score
+
++-------------+
+| max(degree) |
++-------------+
+|          92 |
++-------------+
+1 row in set (0.00 sec)
+
+2、找到最高分的sno和cno
+
+select sno, cno from score where degree=(select max(degree) from score);
+
+排序的做法：
+
+select sno, cno, degree from score order by degree;
+
+mysql> select sno, cno, degree from score order by degree;
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 109 | 3-245 |     68 |
+| 105 | 3-245 |     75 |
+| 109 | 3-105 |     76 |
+| 105 | 6-166 |     79 |
+| 109 | 6-166 |     81 |
+| 103 | 6-166 |     85 |
+| 103 | 3-245 |     86 |
+| 105 | 3-105 |     88 |
+| 103 | 3-105 |     92 |
++-----+-------+--------+
+9 rows in set (0.00 sec)
+
+select sno, cno, degree from score order by degree limit 0,1;
+
+mysql> select sno, cno, degree from score order by degree limit 0,1;
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 109 | 3-245 |     68 |
++-----+-------+--------+
+1 row in set (0.00 sec)
+
+select sno, cno, degree from score order by degree desc limit 0,1;
+
+mysql> select sno, cno, degree from score order by degree desc limit 0,1;
++-----+-------+--------+
+| sno | cno   | degree |
++-----+-------+--------+
+| 103 | 3-105 |     92 |
++-----+-------+--------+
+1 row in set (0.00 sec)
+
+select sno, cno, degree from score order by degree desc limit 0,2;
+
+limit作用： 从多少开始查，查多少条
+
+```
+
+## 11、查询每门课的平均成绩
